@@ -626,7 +626,7 @@
     </div>
 
     <script>
-        const SHIPPING_COST = 35;
+        const SHIPPING_COST = 20;
         let products = [];
         let cart = []; // Stores { name, price, size, batch, qty, category }
         let currentOrderNum = 0;
@@ -642,13 +642,14 @@
 
         // Fallback data for preview environment
         const fallbackProducts = [
-            { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
-            { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
-            { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
-            { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.3%", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
-            { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.7%", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 },
-            { "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
-            { "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 }
+            { "name": "Testosterone Cypionate 200mg/ml", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
+            { "name": "Testosterone Enanthate 250mg/ml",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
+            { "name": "Testosterone Enanthate 300mg/ml", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
+            { "name": "Nandrolone Decanoate 300mg/ml",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.3%", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
+            { "name": "Nandrolone Decanoate 200mg/ml", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.7%", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 },
+            { "name": "Drostanolone Enanthate 200mg/ml", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
+            { "name": "Drostanolone Enanthate 250mg/ml", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 },
+            { "name": "Trenbolone Enanthate 200mg/ml", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 }
         ];
 
         // Fetch the inventory from the JSON file on GitHub/Vercel
