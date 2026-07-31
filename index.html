@@ -1,155 +1,1090 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing</title>
+    <title>Product Price List</title>
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --text-color: #ededed;
-            --text-muted: #888888;
-            --border-color: #222222;
-            --accent-color: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --primary-red: #d93025;
+            --text-color: #3c4043;
+            --border-color: #e0e0e0;
+            --disabled-color: #9aa0a6;
+            --blue-link: #1a73e8;
+            --addon-bg: #fdfaf6;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+        }
+
+        h1 { text-align: center; margin-bottom: 15px; }
+        
+        h2.section-title {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: #333;
+            border-bottom: 2px solid var(--primary-red);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        /* --- NEW LAYOUT CSS --- */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column for mobile */
+            gap: 20px;
+            align-items: start; /* Keeps cart from stretching full height */
+        }
+
+        /* Responsive Desktop Layout */
+        @media (min-width: 900px) {
+            body { max-width: 1300px; } /* Wider body to fit side-by-side */
+            .main-layout {
+                grid-template-columns: 2fr 1fr; /* Tables take 2/3, Cart takes 1/3 */
+            }
+            .cart-container {
+                position: sticky;
+                top: 20px; /* Sticks 20px from the top of the viewport */
+                z-index: 100;
+            }
+        }
+        /* ---------------------- */
+
+        /* Navigation Tabs */
+        .nav-tabs {
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 440px;
+        .nav-tab {
+            text-decoration: none;
+            color: #555;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            font-size: 1.05rem;
         }
 
-        header {
-            margin-bottom: 2rem;
+        .nav-tab:hover {
+            background-color: #e8eaed;
+            color: var(--blue-link);
         }
 
-        h1 {
-            font-size: 1.25rem;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.5rem;
-            color: var(--accent-color);
+        .nav-tab.active {
+            color: white;
+            background-color: var(--blue-link);
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
         }
 
-        p {
-            color: var(--text-muted);
+        .note {
+            background: #fff5f5;
+            border: 1px solid #ffcdd2;
+            color: #b71c1c;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .discount-note {
+            background: #e6f4ea;
+            border: 1px solid #ceead6;
+            color: #137333;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
             font-size: 0.95rem;
-            line-height: 1.5;
         }
 
-        .pricelist {
+        .addon-note {
+            background: #fff8e1;
+            border: 1px solid #ffecb3;
+            color: #f57f17;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .discount-tiers {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+            flex-wrap: wrap;
         }
 
-        .price-item {
+        .discount-tier {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px dashed #137333;
+            font-size: 0.9rem;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 800px;
+        }
+
+        .price-table.addon-table {
+            background: var(--addon-bg);
+            min-width: 600px;
+        }
+
+        th {
+            background-color: #fcfcfc;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .addon-table th { background-color: #fdfaf6; border-bottom: 2px solid #ffecb3; }
+
+        .header-red { color: var(--primary-red); font-size: 1.1rem; }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .addon-table td { border-bottom: 1px solid #ffecb3; }
+
+        .compound-name { font-weight: bold; }
+        
+        .batch-no {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .lab-link {
+            color: var(--blue-link);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .lab-link:hover { text-decoration: underline; }
+
+        button.action-btn {
+            background: none;
+            border: none;
+            color: var(--blue-link);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            white-space: nowrap;
+        }
+
+        button.action-btn:hover:not(:disabled) { color: #174ea6; }
+
+        button.action-btn:disabled {
+            color: var(--disabled-color);
+            text-decoration: none;
+            cursor: not-allowed;
+            font-style: italic;
+        }
+
+        .cart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .cart-title { font-size: 1.5rem; margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        
+        .cart-items { list-style: none; padding: 0; margin: 15px 0; }
+        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
+
+        .total-summary {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .total-row {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 5px;
         }
 
-        .service {
-            color: var(--text-color);
-        }
-
-        .dots {
-            flex-grow: 1;
-            border-bottom: 1px dotted var(--border-color);
-            margin: 0 12px;
-        }
-
-        .price {
-            color: var(--text-muted);
-            font-variant-numeric: tabular-nums;
-        }
-
-        footer {
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-        }
-
-        .btn {
-            display: inline-block;
-            color: var(--text-color);
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--blue-link);
+            color: white;
             text-decoration: none;
-            font-size: 0.95rem;
+            text-align: center;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .checkout-btn:hover { background-color: #174ea6; }
+        
+        .empty-msg { color: #888; font-style: italic; }
+
+        /* SFX Overlay Styling */
+        .sfx-overlay {
+            position: fixed;
+            z-index: 2000;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .sfx-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .sfx-overlay img {
+            transform: translate(-50%, -50%);
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: block;
+        }
+
+        /* Order Modal Styling */
+        #order-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            
+            /* FIXED: Changed from center to flex-start + padding to prevent trapped scrolling on mobile */
+            align-items: flex-start; 
+            justify-content: center;
+            overflow-y: auto;
+            padding: 40px 20px; /* Gives breathing room at top and bottom */
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             position: relative;
+            margin: auto; /* Works with flex-start to center vertically if there's room, but allows scrolling if not */
+        }
+
+        .modal-instruction {
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .email-copy-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .btn-mini-copy {
+            background: #e0e0e0;
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .btn-mini-copy:hover {
+            background: #d0d0d0;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .copy-group {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        #order-text-area {
+            width: 100%;
+            height: 220px;
+            resize: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            background: #f9f9f9;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .primary-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-copy { background: #34a853; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        
+        .close-icon {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
             transition: color 0.2s ease;
+            line-height: 1;
         }
 
-        .btn:hover {
-            color: var(--text-muted);
+        .close-icon:hover {
+            color: var(--primary-red);
         }
 
-        .btn::after {
-            content: '→';
-            margin-left: 6px;
-            display: inline-block;
-            transition: transform 0.2s ease;
+        .btn-copy:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
 
-        .btn:hover::after {
-            transform: translateX(4px);
+        .success-msg {
+            font-size: 0.8rem;
+            color: #34a853;
+            text-align: center;
+            height: 1.2em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        /* SFX Overlay Styling */
+        .sfx-overlay {
+            position: fixed;
+            z-index: 2000;
+            pointer-events: none;
+            /* Start hidden completely */
+            display: none;
+            /* Will be animated via JS */
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .sfx-overlay.active {
+            display: block;
+        }
+
+        .sfx-overlay img {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .nav-tabs { flex-direction: column; align-items: center; gap: 5px; }
+            .nav-tab { width: 100%; text-align: center; box-sizing: border-box; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Pricing</h1>
-            <p>Simple, transparent rates for design and development work. Available for select projects.</p>
-        </header>
+    <h1>Product Catalog</h1>
 
-        <main class="pricelist">
-            <div class="price-item">
-                <span class="service">Landing Page</span>
-                <span class="dots"></span>
-                <span class="price">$1,500</span>
-            </div>
-
-            <div class="price-item">
-                <span class="service">Web Application</span>
-                <span class="dots"></span>
-                <span class="price">$4,000+</span>
-            </div>
-
-            <div class="price-item">
-                <span class="service">Design System</span>
-                <span class="dots"></span>
-                <span class="price">$2,500</span>
-            </div>
-
-            <div class="price-item">
-                <span class="service">Consulting & Audit</span>
-                <span class="dots"></span>
-                <span class="price">$200/hr</span>
-            </div>
-        </main>
-
-        <footer>
-            <a href="Ethicallab@protonmail.com" class="btn">Get in touch</a>
-        </footer>
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <a href="index.html" class="nav-tab active">🛒 Store</a>
+        <a href="brew2.html" class="nav-tab">🧪 Homebrew Calculator</a>
     </div>
 
+    <div class="note">
+        <strong style="font-size: 1.05rem;">What is this Pre-order thing?</strong><br> 
+        For KG quantities, I need to source the raws first as I don’t keep large stock on hand.<br>
+        On Monday, I send a person to Gujarat to buy the Pre-ordered Amount. It reaches me by Thursday and is then Parcelled.
+        <div style="margin-top: 15px; padding: 10px; background-color: white; border: 2px dashed var(--primary-red); border-radius: 6px; font-weight: 800; color: var(--primary-red); font-size: 0.95rem; box-shadow: 0 2px 4px rgba(217, 48, 37, 0.1);">
+            ⚡ Retail Stock can go out of stock, but Pre-orders are ALWAYS available!
+        </div>
+    </div>
+
+    <div class="discount-note">
+        <strong style="font-size: 1.05rem;">🔥 Retail Bulk Discounts (Same Item)</strong>
+        <div class="discount-tiers">
+            <span class="discount-tier">200g: 5% Off</span>
+            <span class="discount-tier">300g: 10% Off</span>
+            <span class="discount-tier">400g: 15% Off</span>
+            <span class="discount-tier">500g: 20% Off</span>
+        </div>
+        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 500g per item). For more, use 1KG Pre-order.</div>
+    </div>
+
+    <!-- START OF MAIN LAYOUT -->
+    <div class="main-layout">
+        
+        <!-- LEFT COLUMN: Tables -->
+        <div class="tables-section">
+            <h2 class="section-title" style="margin-top: 0;">Raw Powders</h2>
+            <div class="table-wrapper">
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Batch No</th>
+                            <th>Lab Test</th>
+                            <th>Stock (100G)</th>
+                            <th class="header-red">Retail (100G)</th>
+                            <th></th>
+                            <th class="header-red">Pre_order (KG)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-list">
+                        <tr><td colspan="8" style="text-align:center; padding: 20px;">Loading Inventory...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="section-title">Exclusive Add-ons</h2>
+            <div class="addon-note">
+                Add up to 10g of Add-ons for every 100g of Raws in your cart! (Example: Buy 200g of Test, unlock up to 20g of Each Add on).
+            </div>
+            <div class="table-wrapper">
+                <table class="price-table addon-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Batch No</th>
+                            <th>Lab Test</th>
+                            <th>Stock (10G units)</th>
+                            <th class="header-red">Retail (10G)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="addon-list">
+                        <!-- Addons will populate here -->
+                    </tbody>
+                </table>
+            </div>
+        </div> <!-- END LEFT COLUMN -->
+
+        <!-- RIGHT COLUMN: Cart (Sticky) -->
+        <div class="cart-container">
+            <h2 class="cart-title">Your Selection</h2>
+            <ul id="cart-items" class="cart-items">
+                <li class="empty-msg">No items selected yet</li>
+            </ul>
+            
+            <div id="cart-summary" class="total-summary" style="display: none;">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span>$<span id="cart-subtotal">0</span></span>
+                </div>
+                <div class="total-row">
+                    <span>Shipping:</span>
+                    <span>$35</span>
+                </div>
+                <div class="total-row grand-total" style="font-size: 1.25rem; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 2px solid #eee;">
+                    <span>Grand Total:</span>
+                    <span>$<span id="cart-total">0</span></span>
+                </div>
+            </div>
+
+            <button class="checkout-btn" onclick="openCheckoutModal()">Place Order</button>
+        </div> <!-- END RIGHT COLUMN -->
+
+    </div> <!-- END OF MAIN LAYOUT -->
+
+    <!-- Order Modal -->
+    <div id="order-modal">
+        <div class="modal-content">
+            <span class="close-icon" onclick="closeModal()">&times;</span>
+            <h3 style="margin-top:0; padding-right: 30px;"> Complete Your Order</h3>
+            
+            <div class="modal-instruction">
+                <div class="email-copy-wrapper">
+                    <p style="margin: 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);" id="vendor-email-text">strixsir@proton.me</strong></p>
+                    <button class="btn-mini-copy" onclick="copyVendorEmail()">Copy</button>
+                </div>
+                <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a crypto payment address in 12 Hours.</p>
+                <div id="email-copy-status" style="font-size: 0.75rem; color: #34a853; height: 1em; margin-top: 4px; font-weight: bold;"></div>
+            </div>
+            
+            <div class="form-group">
+                <label> Shipping Name:</label>
+                <input type="text" id="ship-name" class="form-input" placeholder="First & Last Name" oninput="updateOrderText()">
+            </div>
+            <div class="form-group">
+                <label> Shipping Address:</label>
+                <div style="color: var(--primary-red); font-size: 0.8rem; margin-bottom: 5px;">* Only enter Real name and address, Else parcel will be lost</div>
+                <textarea id="ship-address" class="form-input" style="height: 60px" placeholder="Street, City, State, ZIP, Country" oninput="updateOrderText()"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label> Select Crypto Network:</label>
+                <div style="display: flex; gap: 15px; margin-top: 5px; font-size: 0.9rem;">
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT TRC 20" checked onchange="toggleCustomCrypto()"> USDT TRC 20</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT ERC 20" onchange="toggleCustomCrypto()"> USDT ERC 20</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="BTC" onchange="toggleCustomCrypto()"> BTC</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="Other" onchange="toggleCustomCrypto()"> Other</label>
+                </div>
+                <div id="custom-crypto-container" style="display: none; margin-top: 10px;">
+                    <input type="text" id="custom-crypto-input" class="form-input" placeholder="Specify Crypto (e.g. XMR, ETH)" oninput="updateOrderText()">
+                </div>
+            </div>
+
+            <div class="copy-group">
+                <label> Final Order Block:</label>
+                <textarea id="order-text-area" readonly></textarea>
+                
+                <div class="primary-actions">
+                    <button class="btn-copy" id="btn-copy" onclick="copyOrder()" disabled>Copy Order Details</button>
+                </div>
+                <div id="copy-status" class="success-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SFX Overlays -->
+    <div id="overlay-retail" class="sfx-overlay">
+        <img src="ara.gif?v=3" alt="Ara">
+    </div>
+    <div id="overlay-preorder" class="sfx-overlay">
+        <img src="money.gif?v=3" alt="Money">
+    </div>
+    <div id="overlay-addon" class="sfx-overlay">
+        <img src="arnold.gif?v=3" alt="Arnold">
+    </div>
+
+    <script>
+        const SHIPPING_COST = 35;
+        let products = [];
+        let cart = []; // Stores { name, price, size, batch, qty, category }
+        let currentOrderNum = 0;
+
+        // Audio Objects (Cache-busted to bypass browser memory)
+        const audioRetail = new Audio('ara.mp3?v=3');
+        const audioPreorder = new Audio('money.mp3?v=3');
+        const audioAddon = new Audio('arnold.mp3?v=3');
+
+        // Animation state trackers
+        let activeOverlay = null;
+        let animationTimeout = null;
+
+        // Fallback data for preview environment
+        const fallbackProducts = [
+            { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
+            { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
+            { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
+            { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.3%", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
+            { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.7%", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 },
+            { "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
+            { "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 }
+        ];
+
+        // Fetch the inventory from the JSON file on GitHub/Vercel
+        async function loadInventory() {
+            try {
+                // cache busting included
+                const response = await fetch('products.json?v=' + new Date().getTime());
+                if (!response.ok) throw new Error('Failed to load inventory');
+                products = await response.json();
+            } catch (error) {
+                console.warn("Could not fetch products.json, using fallback data for preview.");
+                products = fallbackProducts;
+            }
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const raws = products.filter(p => p.category !== 'addon');
+            const addons = products.filter(p => p.category === 'addon');
+
+            // Render Raws
+            document.getElementById('product-list').innerHTML = raws.map(item => `
+                <tr>
+                    <td class="compound-name">${item.name}</td>
+                    <td class="batch-no">${item.batch}</td>
+                    <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
+                    <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#34a853' : '#d93025'};">
+                        ${item.stock100 > 0 ? item.stock100 : '0'}
+                    </td>
+                    <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">$${item.p100}</td>
+                    <td>
+                        <button class="action-btn" 
+                                onclick="addToCart('${item.name}', ${item.p100}, '100g', '${item.batch}', 'raw')" 
+                                ${item.stock100 === 0 ? 'disabled' : ''}>
+                            ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
+                        </button>
+                    </td>
+                    <td style="${item.s1k === 0 ? 'color: #999;' : ''}">$${item.p1k}</td>
+                    <td>
+                        <button class="action-btn" 
+                                onclick="addToCart('${item.name}', ${item.p1k}, '1kg', '${item.batch}', 'raw')" 
+                                ${item.s1k === 0 ? 'disabled' : ''}>
+                            ${item.s1k === 0 ? 'Out of Stock' : 'Click to Pre-order'}
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Render Addons
+            if(addons.length > 0) {
+                document.getElementById('addon-list').innerHTML = addons.map(item => `
+                    <tr>
+                        <td class="compound-name">${item.name}</td>
+                        <td class="batch-no">${item.batch}</td>
+                        <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
+                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#f57f17' : '#d93025'};">
+                            ${item.stock100 > 0 ? item.stock100 : '0'}
+                        </td>
+                        <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">$${item.p100}</td>
+                        <td>
+                            <button class="action-btn" 
+                                    onclick="addToCart('${item.name}', ${item.p100}, '10g', '${item.batch}', 'addon')" 
+                                    ${item.stock100 === 0 ? 'disabled' : ''}>
+                                ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                document.getElementById('addon-list').innerHTML = `<tr><td colspan="6" style="text-align:center;">No add-ons available.</td></tr>`;
+            }
+        }
+
+        function triggerSFX(type) {
+            let overlayId = '';
+            let audioObj = null;
+
+            if (type === 'retail') {
+                overlayId = 'overlay-retail';
+                audioObj = audioRetail;
+            } else if (type === 'preorder') {
+                overlayId = 'overlay-preorder';
+                audioObj = audioPreorder;
+            } else if (type === 'addon') {
+                overlayId = 'overlay-addon';
+                audioObj = audioAddon;
+            }
+
+            if (overlayId && audioObj) {
+                // Play sound
+                audioObj.currentTime = 0;
+                audioObj.play().catch(e => console.log("Audio play blocked by browser:", e));
+
+                const overlay = document.getElementById(overlayId);
+                
+                // Clear existing animation if clicked rapidly
+                if (animationTimeout) {
+                    clearTimeout(animationTimeout);
+                    if (activeOverlay) {
+                        activeOverlay.classList.remove('active');
+                        activeOverlay.style.transition = 'none';
+                    }
+                }
+                
+                activeOverlay = overlay;
+
+                // Define full-screen distances to slide from/to safely
+                const directions = [
+                    { x: '0vw', y: '-100vh' }, // Top
+                    { x: '0vw', y: '100vh' },  // Bottom
+                    { x: '-100vw', y: '0vh' }, // Left
+                    { x: '100vw', y: '0vh' }   // Right
+                ];
+
+                let startIdx = Math.floor(Math.random() * directions.length);
+                let endIdx;
+                do {
+                    endIdx = Math.floor(Math.random() * directions.length);
+                } while (endIdx === startIdx);
+
+                const startTransform = `translate(${directions[startIdx].x}, ${directions[startIdx].y})`;
+                const centerTransform = `translate(0vw, 0vh)`;
+                const endTransform = `translate(${directions[endIdx].x}, ${directions[endIdx].y})`;
+
+                // 1. Snap off-screen
+                overlay.style.transition = 'none';
+                overlay.style.transform = startTransform;
+                overlay.classList.add('active');
+
+                // 2. Force reflow
+                void overlay.offsetWidth;
+
+                // 3. Slide In
+                overlay.style.transition = 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                overlay.style.transform = centerTransform;
+
+                // 4. Slide Out after exactly 600ms
+                animationTimeout = setTimeout(() => {
+                    overlay.style.transform = endTransform;
+                    
+                    // Hide completely after slide out finishes
+                    setTimeout(() => {
+                        if (activeOverlay === overlay) {
+                            overlay.classList.remove('active');
+                        }
+                    }, 200); 
+                    
+                }, 600); 
+            }
+        }
+
+        function getRawIncrements() {
+            // Count total 100g increments in cart. 1kg orders DO NOT count towards this limit anymore.
+            let increments = 0;
+            cart.forEach(item => {
+                if (item.category !== 'addon' && item.size === '100g') {
+                    increments += item.qty;
+                }
+            });
+            return increments;
+        }
+
+        function enforceAddonLimits() {
+            // Ensure addons do not exceed raw increments
+            let maxQty = getRawIncrements();
+            cart.forEach(item => {
+                if (item.category === 'addon') {
+                    if (item.qty > maxQty) {
+                        item.qty = maxQty; // Auto-correct quantity downward if they removed raws
+                    }
+                }
+            });
+            
+            // Clean up any addons that were forced down to 0
+            cart = cart.filter(item => item.qty > 0);
+        }
+
+        // Removed 'category' from the function parameters, we will fetch it securely
+        function addToCart(name, price, size, batch) {
+            let totalItems = 0;
+            cart.forEach(i => totalItems += i.qty);
+            
+            if (totalItems >= 30) {
+                alert("You have reached the maximum of 30 items per order.");
+                return;
+            }
+
+            // --- SECURITY PATCH: Verify against actual database, ignore HTML DOM ---
+            let productRecord = products.find(p => p.name === name && p.batch === batch);
+            if (!productRecord) return; // Failsafe if name/batch was spoofed
+            
+            // Securely determine the true category from the DB, defaulting to 'raw'
+            let trueCategory = productRecord.category || 'raw';
+            
+            // Fix Exploit: Enforce 1KG out-of-stock checks correctly
+            if (size === '1kg' && productRecord.s1k <= 0) {
+                alert("Sorry, 1KG Pre-orders are currently closed for this item.");
+                return;
+            }
+
+            let maxStock = (size === '100g' || size === '10g') ? productRecord.stock100 : Infinity;
+            
+            // Fix Exploit: Block users who remove the 'disabled' tag from out-of-stock buttons
+            if (maxStock <= 0) {
+                alert("Sorry, this item is currently out of stock.");
+                return;
+            }
+            
+            // Ignore HTML price parameter and fetch the true price
+            let securePrice = size === '1kg' ? productRecord.p1k : productRecord.p100;
+            // ----------------------------------------------------------------------
+
+            let existingItem = cart.find(i => i.name === name && i.size === size && i.batch === batch);
+            
+            if (trueCategory === 'addon') {
+                let allowedIncrements = getRawIncrements();
+                if (allowedIncrements === 0) {
+                    alert("You must add Raws to your cart before unlocking Add-ons.");
+                    return;
+                }
+                
+                let currentAddonQty = existingItem ? existingItem.qty : 0;
+                if (currentAddonQty >= allowedIncrements) {
+                    alert(`Add-on limit reached! Based on your cart's Raw weight, you can only add up to ${allowedIncrements * 10}g of ${name}. Add more Raws to increase this limit.`);
+                    return;
+                }
+            }
+
+            if (existingItem) {
+                if (existingItem.qty >= maxStock) {
+                    alert(`Sorry, we only have ${maxStock} units in stock for this item.`);
+                    return;
+                }
+                
+                // Enforce 500g max limit rule for retail discount (Only for Raws)
+                if (trueCategory !== 'addon' && size === '100g' && existingItem.qty >= 5) {
+                    alert("Maximum 500g (5 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
+                    return;
+                }
+                
+                existingItem.qty += 1;
+            } else {
+                // Use the secure parameters here
+                cart.push({ name, price: securePrice, size, batch, qty: 1, category: trueCategory });
+            }
+            
+            // Trigger visual and audio effects
+            if (trueCategory === 'addon') {
+                triggerSFX('addon');
+            } else if (size === '100g') {
+                triggerSFX('retail');
+            } else if (size === '1kg') {
+                triggerSFX('preorder');
+            }
+
+            updateCartUI();
+        }
+
+        function calculateItemPrice(item) {
+            let baseTotal = item.price * item.qty;
+            let discountPercent = 0;
+            
+            // Apply bulk discounts ONLY to 100g Raws
+            if (item.category !== 'addon' && item.size === '100g') {
+                if (item.qty === 2) discountPercent = 0.05;      // 200g = 5% off
+                else if (item.qty === 3) discountPercent = 0.10; // 300g = 10% off
+                else if (item.qty === 4) discountPercent = 0.15; // 400g = 15% off
+                else if (item.qty === 5) discountPercent = 0.20; // 500g = 20% off
+            }
+            
+            let finalTotal = baseTotal * (1 - discountPercent);
+            
+            return {
+                finalTotal: Math.round(finalTotal),
+                discountPercent: discountPercent
+            };
+        }
+
+        function updateCartUI() {
+            // Before drawing UI, make sure addon constraints are still met (important if an item was removed)
+            enforceAddonLimits(); 
+            
+            const list = document.getElementById('cart-items');
+            const subtotalDisplay = document.getElementById('cart-subtotal');
+            const totalDisplay = document.getElementById('cart-total');
+            const summaryDiv = document.getElementById('cart-summary');
+
+            if (cart.length === 0) {
+                list.innerHTML = '<li class="empty-msg">No items selected yet</li>';
+                summaryDiv.style.display = 'none';
+                return;
+            }
+
+            summaryDiv.style.display = 'block';
+            let subtotal = 0;
+
+            list.innerHTML = cart.map((item, index) => {
+                let pricing = calculateItemPrice(item);
+                subtotal += pricing.finalTotal;
+                
+                let discountLabel = "";
+                if (pricing.discountPercent > 0) {
+                    discountLabel = `<span style="color:var(--primary-red); font-size:0.85rem; font-weight:bold; margin-left:5px;">(-${pricing.discountPercent * 100}%)</span>`;
+                }
+
+                return `
+                    <li class="cart-item">
+                        <span>${item.name} (${item.size}) x${item.qty}</span>
+                        <span>$${pricing.finalTotal} ${discountLabel} <button style="color:red; margin-left:10px; text-decoration:none; cursor:pointer;" onclick="removeItem(${index})">×</button></span>
+                    </li>
+                `;
+            }).join('');
+
+            subtotalDisplay.innerText = subtotal.toLocaleString();
+            totalDisplay.innerText = (subtotal + SHIPPING_COST).toLocaleString();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            // updateCartUI calls enforceAddonLimits() automatically
+            updateCartUI(); 
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) return alert("Please add items to your selection first.");
+            currentOrderNum = Math.floor(100000 + Math.random() * 900000);
+            
+            // Clear inputs for fresh modal
+            document.getElementById('ship-name').value = '';
+            document.getElementById('ship-address').value = '';
+            
+            updateOrderText();
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function toggleCustomCrypto() {
+            const network = document.querySelector('input[name="crypto-network"]:checked').value;
+            const customContainer = document.getElementById('custom-crypto-container');
+            if (network === 'Other') {
+                customContainer.style.display = 'block';
+            } else {
+                customContainer.style.display = 'none';
+                document.getElementById('custom-crypto-input').value = ''; // clear input when hidden
+            }
+            updateOrderText();
+        }
+
+        function updateOrderText() {
+            const name = document.getElementById('ship-name').value.trim();
+            const addr = document.getElementById('ship-address').value.trim();
+            let cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
+            
+            if (cryptoNetwork === 'Other') {
+                const customCrypto = document.getElementById('custom-crypto-input').value.trim();
+                cryptoNetwork = customCrypto ? customCrypto : "OTHER CRYPTO";
+            }
+            
+            let subtotal = 0;
+
+            const itemsText = cart.map(i => {
+                let pricing = calculateItemPrice(i);
+                subtotal += pricing.finalTotal;
+                
+                let line = `- ${i.name} [Batch: ${i.batch}] (${i.size}) x${i.qty}: $${pricing.finalTotal}`;
+                if (pricing.discountPercent > 0) {
+                    line += ` (-${pricing.discountPercent * 100}% bulk discount)`;
+                }
+                return line;
+            }).join("\n");
+
+            const grandTotal = subtotal + SHIPPING_COST;
+
+            const fullText = `ORDER REFERENCE: #${currentOrderNum}
+----------------------------
+ITEMS:
+${itemsText}
+----------------------------
+SUBTOTAL: $${subtotal}
+SHIPPING: $${SHIPPING_COST}
+----------------------------
+GRAND TOTAL: $${grandTotal}
+----------------------------
+SHIPPING INFO:
+Name: ${name || "[REQUIRED]"}
+Address: ${addr || "[REQUIRED]"}
+----------------------------
+${cryptoNetwork} ADDRESS REQUESTED
+You will Receive a ${cryptoNetwork} address in 12 Hours.`;
+            
+            document.getElementById('order-text-area').value = fullText;
+            
+            // Toggle buttons based on validation
+            const isValid = name !== "" && addr !== "";
+            document.getElementById('btn-copy').disabled = !isValid;
+        }
+
+        function copyOrder() {
+            const name = document.getElementById('ship-name').value.trim();
+            const addr = document.getElementById('ship-address').value.trim();
+            if (!name || !addr) return alert("Please enter shipping name and address.");
+            
+            const network = document.querySelector('input[name="crypto-network"]:checked').value;
+            if (network === 'Other') {
+               const customCrypto = document.getElementById('custom-crypto-input').value.trim();
+               if(!customCrypto) return alert("Please specify the crypto you want to use.");
+            }
+
+            const textArea = document.getElementById('order-text-area');
+            textArea.select();
+            document.execCommand('copy');
+            const status = document.getElementById('copy-status');
+            status.innerText = "✓ Order copied! Please paste in your email.";
+            setTimeout(() => { status.innerText = ""; }, 4000);
+        }
+
+        function copyVendorEmail() {
+            const emailText = document.getElementById('vendor-email-text').innerText;
+            // Create a temporary textarea to copy from
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = emailText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            
+            const status = document.getElementById('email-copy-status');
+            status.innerText = "✓ Email copied!";
+            setTimeout(() => { status.innerText = ""; }, 3000);
+        }
+
+        function closeModal() {
+            document.getElementById('order-modal').style.display = 'none';
+        }
+
+        // Start the app by loading the inventory
+        loadInventory();
+    </script>
 </body>
 </html>
