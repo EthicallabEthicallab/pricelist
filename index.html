@@ -36,27 +36,25 @@
             display: inline-block;
         }
 
-        /* --- NEW LAYOUT CSS --- */
+        /* --- LAYOUT CSS --- */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr; /* Default to single column for mobile */
+            grid-template-columns: 1fr;
             gap: 20px;
-            align-items: start; /* Keeps cart from stretching full height */
+            align-items: start;
         }
 
-        /* Responsive Desktop Layout */
         @media (min-width: 900px) {
-            body { max-width: 1300px; } /* Wider body to fit side-by-side */
+            body { max-width: 1300px; }
             .main-layout {
-                grid-template-columns: 2fr 1fr; /* Tables take 2/3, Cart takes 1/3 */
+                grid-template-columns: 2fr 1fr;
             }
             .cart-container {
                 position: sticky;
-                top: 20px; /* Sticks 20px from the top of the viewport */
+                top: 20px;
                 z-index: 100;
             }
         }
-        /* ---------------------- */
 
         /* Navigation Tabs */
         .nav-tabs {
@@ -425,10 +423,11 @@
     </div>
 
     <div class="discount-note">
-        <strong style="font-size: 1.05rem;">🔥 Discounts (Min. 3x Same Item):</strong>
+        <strong style="font-size: 1.05rem;">🔥 Discounts:</strong>
         <div class="discount-tiers">
             <span class="discount-tier">Steroids 10ml: 10% off (when selecting 5+ of the exact same product)</span>
             <span class="discount-tier">Peptides and HGH: 30% off (when selecting 3+ of the exact same product)</span>
+            <span class="discount-tier">PCT & AI & Orals: 10% off (when selecting 3+ of the exact same product)</span>
         </div>
         <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically to eligible items in cart.</div>
     </div>
@@ -468,6 +467,24 @@
                     </thead>
                     <tbody id="addon-list">
                         <!-- Addons will populate here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- NEUE KATEGORIE: PCT & AI & Orals -->
+            <h2 class="section-title">PCT & AI & Orals</h2>
+            <div class="table-wrapper">
+                <table class="price-table addon-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Stock</th>
+                            <th class="header-red">Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="pct-list">
+                        <!-- PCT, AI & Orals will populate here -->
                     </tbody>
                 </table>
             </div>
@@ -609,7 +626,20 @@
             { "name": "Teriparatide 750mcg", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 100, "stock100":20 },
             { "name": "Abaloparatide 30mg", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 120, "stock100":18 },
             { "name": "P21 10mg", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 70, "stock100":8 },
-            { "name": "HCG 6000IU", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 32, "stock100": 20 }
+            { "name": "HCG 6000IU", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 32, "stock100": 20 },
+            // Beispiele für PCT & AI & Orals
+            { "name": "Raloxifen 50x60mg", "category": "pct", "batch": "P-101", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.1%", "p100": 30, "stock100": 10 },
+            { "name": "Exemestan 25x25mg", "category": "pct", "batch": "P-102", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 30, "stock100": 15 },
+            { "name": "Letrozole 50x2.5mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 33, "stock100": 30 },
+            { "name": "Tamoxifen 50x20mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 28, "stock100": 30 },
+            { "name": "Tadalafil 25x20mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 30, "stock100": 36 },
+            { "name": "Tadalafil 20x60mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 55, "stock100": 10 },
+            { "name": "Isotretinoin 50x10mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 30, "stock100": 20 },
+            { "name": "Isotretinoin 100x20mg(Pharmagrade)", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 200, "stock100": 2 },
+            { "name": "Candesartan 98x32mg(Pharmagrade)", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 75, "stock100": 5 },
+            { "name": "Enclomiphene 50x25mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 60, "stock100": 4 },
+            { "name": "GW501516 50x10mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 40, "stock100": 15 },
+            { "name": "Cabergoline 50x0.5mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 66, "stock100": 2 }
         ];
 
         async function loadInventory() {
@@ -625,8 +655,9 @@
         }
 
         function renderProducts() {
-            const raws = products.filter(p => p.category !== 'addon');
+            const raws = products.filter(p => p.category !== 'addon' && p.category !== 'pct');
             const addons = products.filter(p => p.category === 'addon');
+            const pctItems = products.filter(p => p.category === 'pct');
 
             // Render Raws / Steroids
             document.getElementById('product-list').innerHTML = raws.map(item => `
@@ -667,6 +698,28 @@
             } else {
                 document.getElementById('addon-list').innerHTML = `<tr><td colspan="4" style="text-align:center;">No items available.</td></tr>`;
             }
+
+            // Render PCT, AI & Orals
+            if(pctItems.length > 0) {
+                document.getElementById('pct-list').innerHTML = pctItems.map(item => `
+                    <tr>
+                        <td class="compound-name">${item.name}</td>
+                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#f57f17' : '#d93025'};">
+                            ${item.stock100 > 0 ? item.stock100 : '0'}
+                        </td>
+                        <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">${item.p100} €</td>
+                        <td>
+                            <button class="action-btn" 
+                                    onclick="addToCart('${item.name}', ${item.p100}, '10g', '${item.batch}', 'pct')" 
+                                    ${item.stock100 === 0 ? 'disabled' : ''}>
+                                ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                document.getElementById('pct-list').innerHTML = `<tr><td colspan="4" style="text-align:center;">No items available.</td></tr>`;
+            }
         }
 
         function triggerSFX(type) {
@@ -679,7 +732,7 @@
             } else if (type === 'preorder') {
                 overlayId = 'overlay-preorder';
                 audioObj = audioPreorder;
-            } else if (type === 'addon') {
+            } else if (type === 'addon' || type === 'pct') {
                 overlayId = 'overlay-addon';
                 audioObj = audioAddon;
             }
@@ -763,8 +816,8 @@
                 cart.push({ name, price: securePrice, size, batch, qty: 1, category: trueCategory });
             }
             
-            if (trueCategory === 'addon') {
-                triggerSFX('addon');
+            if (trueCategory === 'addon' || trueCategory === 'pct') {
+                triggerSFX(trueCategory);
             } else if (size === '100g') {
                 triggerSFX('retail');
             } else if (size === '1kg') {
@@ -774,30 +827,35 @@
             updateCartUI();
         }
 
-        // BERECHNUNG DES RABATTS NUR AUF DAS JEWEILIGE PRODUKT
-    function calculateItemPrice(item) {
-    let baseTotal = item.price * item.qty;
-    let discountPercent = 0;
-    
-    if (item.category === 'addon') {
-        // Peptides and HGH -> 30% Rabatt ab 3 Stück
-        if (item.qty >= 3) {
-            discountPercent = 0.30;
+        // BERECHNUNG DES RABATTS NACH KATEGORIE
+        function calculateItemPrice(item) {
+            let baseTotal = item.price * item.qty;
+            let discountPercent = 0;
+            
+            if (item.category === 'addon') {
+                // Peptides and HGH -> 30% Rabatt ab 3 Stück
+                if (item.qty >= 3) {
+                    discountPercent = 0.30;
+                }
+            } else if (item.category === 'pct') {
+                // PCT & AI & Orals -> 10% Rabatt ab 3 Stück
+                if (item.qty >= 3) {
+                    discountPercent = 0.10;
+                }
+            } else {
+                // Steroids / Oil -> 10% Rabatt erst ab 5 Stück
+                if (item.qty >= 5) {
+                    discountPercent = 0.10;
+                }
+            }
+            
+            let finalTotal = baseTotal * (1 - discountPercent);
+            
+            return {
+                finalTotal: Math.round(finalTotal),
+                discountPercent: discountPercent
+            };
         }
-    } else {
-        // Steroids / Oil -> 10% Rabatt erst ab 5 Stück
-        if (item.qty >= 5) {
-            discountPercent = 0.10;
-        }
-    }
-    
-    let finalTotal = baseTotal * (1 - discountPercent);
-    
-    return {
-        finalTotal: Math.round(finalTotal),
-        discountPercent: discountPercent
-    };
-}
 
         function updateCartUI() {
             const list = document.getElementById('cart-items');
