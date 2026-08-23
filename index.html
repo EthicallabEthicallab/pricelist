@@ -6,37 +6,56 @@
     <title>Product Price List</title>
     <style>
         :root {
-            --primary-red: #d93025;
-            --text-color: #3c4043;
-            --border-color: #e0e0e0;
-            --disabled-color: #9aa0a6;
-            --blue-link: #1a73e8;
-            --addon-bg: #fdfaf6;
+            --primary-neon: #00f0ff;
+            --secondary-neon: #00ffaa;
+            --accent-pink: #ff007f;
+            --accent-orange: #ff5722;
+            --bg-dark: #030408;
+            --card-bg: rgba(10, 16, 32, 0.85);
+            --text-color: #e0e0e0;
+            --border-glow: rgba(0, 240, 255, 0.3);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-dark) !important;
+            background: radial-gradient(circle at center, #1b1035 0%, #080a14 70%, #030408 100%) !important;
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--text-color);
-            line-height: 1.5;
             padding: 20px;
             max-width: 1100px;
             margin: 0 auto;
-            background-color: #f8f9fa;
         }
 
-        h1 { text-align: center; margin-bottom: 15px; }
+        h1 { 
+            text-align: center; 
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, #ffde59 0%, #ff5722 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(255, 87, 34, 0.6));
+        }
         
         h2.section-title {
             margin-top: 40px;
             margin-bottom: 15px;
             font-size: 1.4rem;
-            color: #333;
-            border-bottom: 2px solid var(--primary-red);
+            color: #ffffff;
+            border-bottom: 2px solid var(--primary-neon);
             padding-bottom: 5px;
             display: inline-block;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
         }
 
-        /* --- LAYOUT CSS --- */
         .main-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -56,19 +75,18 @@
             }
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 25px;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 1px solid var(--border-glow);
             padding-bottom: 10px;
         }
 
         .nav-tab {
             text-decoration: none;
-            color: #555;
+            color: #888;
             font-weight: bold;
             padding: 10px 20px;
             border-radius: 6px;
@@ -77,34 +95,36 @@
         }
 
         .nav-tab:hover {
-            background-color: #e8eaed;
-            color: var(--blue-link);
+            background-color: rgba(0, 240, 255, 0.1);
+            color: var(--primary-neon);
         }
 
         .nav-tab.active {
-            color: white;
-            background-color: var(--blue-link);
-            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
+            color: #fff;
+            background: linear-gradient(90deg, #00f0ff, #0072ff);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
         }
 
         .note {
-            background: #fff5f5;
-            border: 1px solid #ffcdd2;
-            color: #b71c1c;
-            padding: 15px;
-            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--primary-neon);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .discount-note {
-            background: #e6f4ea;
-            border: 1px solid #ceead6;
-            color: #137333;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            background: rgba(10, 16, 32, 0.85);
+            border: 2px solid var(--primary-neon);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            color: var(--secondary-neon);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
             text-align: center;
             font-size: 0.95rem;
         }
@@ -119,10 +139,11 @@
         }
 
         .discount-tier {
-            background: white;
-            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            padding: 8px 14px;
             border-radius: 20px;
-            border: 1px dashed #137333;
+            border: 1px dashed var(--secondary-neon);
             font-size: 0.9rem;
         }
 
@@ -131,96 +152,102 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             margin-bottom: 40px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
             border-radius: 8px;
+            border: 1px solid var(--border-glow);
         }
 
         .price-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background: rgba(10, 16, 32, 0.8);
             min-width: 800px;
         }
 
-        .price-table.addon-table {
-            background: var(--addon-bg);
-            min-width: 600px;
-        }
-
         th {
-            background-color: #fcfcfc;
+            background-color: rgba(18, 28, 56, 0.9);
+            color: var(--primary-neon);
             padding: 15px;
             text-align: left;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--primary-neon);
             font-weight: 600;
             white-space: nowrap;
         }
 
-        .addon-table th { background-color: #fdfaf6; border-bottom: 2px solid #ffecb3; }
-
-        .header-red { color: var(--primary-red); font-size: 1.1rem; }
+        .header-red { color: var(--accent-pink); font-size: 1.1rem; }
 
         td {
             padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.15);
             vertical-align: middle;
+            color: #fff;
         }
-
-        .addon-table td { border-bottom: 1px solid #ffecb3; }
 
         .compound-name { font-weight: bold; }
 
         button.action-btn {
-            background: none;
+            background: linear-gradient(90deg, #00f0ff, #0072ff);
             border: none;
-            color: var(--blue-link);
-            text-decoration: underline;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9rem;
-            padding: 8px 0;
+            font-size: 0.85rem;
+            font-weight: bold;
             white-space: nowrap;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            transition: all 0.2s;
         }
 
-        button.action-btn:hover:not(:disabled) { color: #174ea6; }
+        button.action-btn:hover:not(:disabled) { 
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
+            transform: translateY(-1px);
+        }
 
         button.action-btn:disabled {
-            color: var(--disabled-color);
-            text-decoration: none;
+            background: #333;
+            color: #777;
+            box-shadow: none;
             cursor: not-allowed;
-            font-style: italic;
         }
 
         .cart-container {
-            background: white;
+            background: rgba(10, 16, 32, 0.9);
             padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+            border: 2px solid var(--primary-neon);
         }
 
-        .cart-title { font-size: 1.5rem; margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .cart-title { 
+            font-size: 1.5rem; 
+            margin-top: 0; 
+            border-bottom: 1px solid var(--border-glow); 
+            padding-bottom: 10px; 
+            color: #fff;
+        }
         
         .cart-items { list-style: none; padding: 0; margin: 15px 0; }
-        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
+        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
 
         .total-summary {
             margin-top: 15px;
             padding-top: 10px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-glow);
         }
 
         .total-row {
             display: flex;
             justify-content: space-between;
             font-size: 1rem;
-            color: #555;
+            color: #aaa;
             margin-bottom: 5px;
         }
 
         .checkout-btn {
             display: block;
             width: 100%;
-            background-color: var(--blue-link);
+            background: linear-gradient(90deg, #00f0ff, #0072ff);
             color: white;
             text-decoration: none;
             text-align: center;
@@ -230,19 +257,24 @@
             font-weight: bold;
             border: none;
             cursor: pointer;
-            transition: background 0.2s;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            transition: all 0.2s;
+            text-transform: uppercase;
         }
 
-        .checkout-btn:hover { background-color: #174ea6; }
+        .checkout-btn:hover { 
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+            transform: translateY(-2px);
+        }
         
-        .empty-msg { color: #888; font-style: italic; }
+        .empty-msg { color: #666; font-style: italic; }
 
-        /* Order Modal Styling */
         #order-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: flex-start; 
             justify-content: center;
@@ -252,22 +284,24 @@
         }
 
         .modal-content {
-            background: white;
+            background: #0d1322;
+            border: 2px solid var(--primary-neon);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
             padding: 30px;
-            border-radius: 8px;
+            border-radius: 12px;
             max-width: 550px;
             width: 100%;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             position: relative;
             margin: auto;
+            color: #fff;
         }
 
         .modal-instruction {
             margin-bottom: 20px;
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.05);
             padding: 15px;
             border-radius: 6px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-glow);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -281,18 +315,14 @@
         }
 
         .btn-mini-copy {
-            background: #e0e0e0;
-            border: 1px solid #ccc;
+            background: var(--primary-neon);
+            border: none;
             padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.75rem;
-            color: #333;
+            color: #000;
             font-weight: bold;
-        }
-        
-        .btn-mini-copy:hover {
-            background: #d0d0d0;
         }
 
         .form-group { margin-bottom: 15px; }
@@ -301,13 +331,15 @@
             font-size: 0.85rem;
             font-weight: bold;
             margin-bottom: 5px;
-            color: #444;
+            color: var(--primary-neon);
         }
 
         .form-input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(0,0,0,0.5);
+            color: #fff;
             border-radius: 4px;
             box-sizing: border-box;
             font-family: inherit;
@@ -316,31 +348,35 @@
         .copy-group {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
+            border-top: 1px solid var(--border-glow);
         }
 
         #order-text-area {
             width: 100%;
             height: 220px;
             resize: none;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 240, 255, 0.3);
             border-radius: 4px;
             font-family: monospace;
             font-size: 0.85rem;
-            background: #f9f9f9;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--secondary-neon);
             box-sizing: border-box;
             padding: 10px;
             margin-bottom: 10px;
         }
 
-        .primary-actions {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 15px;
+        .btn-copy { 
+            background: var(--secondary-neon); 
+            color: #000; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
         }
-
-        .btn-copy { background: #34a853; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         
         .close-icon {
             position: absolute;
@@ -348,31 +384,30 @@
             right: 20px;
             font-size: 1.8rem;
             font-weight: bold;
-            color: #aaa;
+            color: #888;
             cursor: pointer;
             transition: color 0.2s ease;
             line-height: 1;
         }
 
-        .close-icon:hover {
-            color: var(--primary-red);
-        }
+        .close-icon:hover { color: var(--accent-pink); }
 
         .btn-copy:disabled {
-            background: #ccc;
+            background: #444;
+            color: #888;
+            box-shadow: none;
             cursor: not-allowed;
         }
 
         .success-msg {
             font-size: 0.8rem;
-            color: #34a853;
+            color: var(--secondary-neon);
             text-align: center;
             height: 1.2em;
             margin-top: 5px;
             font-weight: bold;
         }
 
-        /* SFX Overlay Styling */
         .sfx-overlay {
             position: fixed;
             z-index: 2000;
@@ -381,15 +416,13 @@
             transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .sfx-overlay.active {
-            display: block;
-        }
+        .sfx-overlay.active { display: block; }
 
         .sfx-overlay img {
             max-width: 300px;
             max-height: 300px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: block;
         }
 
@@ -410,11 +443,11 @@
     </div>
 
     <div class="note">
-        <strong style="font-size: 1.05rem;">Short introduction about me.</strong><br> 
+        <strong style="font-size: 1.05rem; color: var(--primary-neon);">Short introduction about me.</strong><br> 
         All the Steroids I sell are made by myself with Myglyol 812N(Pharma Grade MCT Oil) and no extra Solvents outside of BB and BA are added! Everything I sell is also used myself and filtered by a PTFE Syringe Filter 0.22 µm or 0.22 µm PTFE membrane with 2 Hepa Filters running along with a portable fume extractor,
         which means that I care for maximum sterility! If you want a specific dosage of something or a different carrier oil you can contact me by Mail and we will try to get it done as long as it is possible.<br>
         If you order 5 pieces of the same Steroid item you will get a 10% discount on it. If you order 3 pieces of the same Peptide/HGH item you will get a 30% discount on it.
-        <div style="margin-top: 15px; padding: 10px; background-color: white; border: 2px dashed var(--primary-red); border-radius: 6px; font-weight: 800; color: var(--primary-red); font-size: 0.95rem; box-shadow: 0 2px 4px rgba(217, 48, 37, 0.1);">
+        <div style="margin-top: 15px; padding: 12px; background-color: rgba(0, 0, 0, 0.5); border: 2px dashed var(--accent-pink); border-radius: 6px; font-weight: 800; color: #ff5252; font-size: 0.95rem; box-shadow: 0 0 10px rgba(255, 82, 82, 0.2);">
             ⚡ Janoshik Tests will be reimbursed by 100% store credit, so feel free to test its basically for free if you intend to buy more anyways!
             ONLY USE A PROTONMAIL ADRESS TO CONTACT ME!!!! IF YOU USE A FUCKED UP ADRESS, WHERE YOUR ORDER IS GETTING RETURNED YOU WILL BE BANNED FROM ORDERING!
             I ONLY SHIP WITHIN EUROPE EXCLUDING DENMARK,FINLAND AND SWEDEN!!! IN CASE OF SEIZURE I WILL RESHIP FOR FREE.
@@ -423,13 +456,13 @@
     </div>
 
     <div class="discount-note">
-        <strong style="font-size: 1.05rem;">🔥 Discounts:</strong>
+        <strong style="font-size: 1.1rem; color: #ffde59;">🔥 Discounts:</strong>
         <div class="discount-tiers">
             <span class="discount-tier">Steroids 10ml: 10% off (when selecting 5+ of the exact same product)</span>
             <span class="discount-tier">Peptides and HGH: 30% off (when selecting 3+ of the exact same product)</span>
             <span class="discount-tier">PCT & AI & Orals: 10% off (when selecting 3+ of the exact same product)</span>
         </div>
-        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically to eligible items in cart.</div>
+        <div style="font-size: 0.8rem; margin-top: 10px; color: #aaa;">*Applies automatically to eligible items in cart.</div>
     </div>
 
     <!-- START OF MAIN LAYOUT -->
@@ -456,7 +489,7 @@
 
             <h2 class="section-title">Peptides and HGH</h2>
             <div class="table-wrapper">
-                <table class="price-table addon-table">
+                <table class="price-table">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -471,10 +504,10 @@
                 </table>
             </div>
 
-            <!-- NEUE KATEGORIE: PCT & AI & Orals -->
+            <!-- PCT & AI & Orals -->
             <h2 class="section-title">PCT & AI & Orals</h2>
             <div class="table-wrapper">
-                <table class="price-table addon-table">
+                <table class="price-table">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -506,7 +539,7 @@
                     <span>Shipping:</span>
                     <span>20 €</span>
                 </div>
-                <div class="total-row grand-total" style="font-size: 1.25rem; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 2px solid #eee;">
+                <div class="total-row grand-total" style="font-size: 1.25rem; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-glow); color: var(--secondary-neon);">
                     <span>Grand Total:</span>
                     <span><span id="cart-total">0</span> €</span>
                 </div>
@@ -521,15 +554,15 @@
     <div id="order-modal">
         <div class="modal-content">
             <span class="close-icon" onclick="closeModal()">&times;</span>
-            <h3 style="margin-top:0; padding-right: 30px;"> Complete Your Order</h3>
+            <h3 style="margin-top:0; padding-right: 30px; color: var(--primary-neon);"> Complete Your Order</h3>
             
             <div class="modal-instruction">
                 <div class="email-copy-wrapper">
-                    <p style="margin: 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);" id="vendor-email-text">Ethicallab@protonmail.com</strong></p>
+                    <p style="margin: 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--accent-pink);" id="vendor-email-text">Ethicallab@protonmail.com</strong></p>
                     <button class="btn-mini-copy" onclick="copyVendorEmail()">Copy</button>
                 </div>
-                <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a crypto payment address in 12 Hours.</p>
-                <div id="email-copy-status" style="font-size: 0.75rem; color: #34a853; height: 1em; margin-top: 4px; font-weight: bold;"></div>
+                <p style="margin: 0; font-size: 0.85rem; color: #aaa;">You will Receive a crypto payment address in 12 Hours.</p>
+                <div id="email-copy-status" style="font-size: 0.75rem; color: var(--secondary-neon); height: 1em; margin-top: 4px; font-weight: bold;"></div>
             </div>
             
             <div class="form-group">
@@ -538,7 +571,7 @@
             </div>
             <div class="form-group">
                 <label> Shipping Address:</label>
-                <div style="color: var(--primary-red); font-size: 0.8rem; margin-bottom: 5px;">* Only enter Real name and address, Else parcel will be lost</div>
+                <div style="color: var(--accent-pink); font-size: 0.8rem; margin-bottom: 5px;">* Only enter Real name and address, Else parcel will be lost</div>
                 <textarea id="ship-address" class="form-input" style="height: 60px" placeholder="Street, City, State, ZIP, Country" oninput="updateOrderText()"></textarea>
             </div>
 
@@ -556,7 +589,7 @@
             </div>
 
             <div class="copy-group">
-                <label> Final Order Block:</label>
+                <label style="color: var(--primary-neon);"> Final Order Block:</label>
                 <textarea id="order-text-area" readonly></textarea>
                 
                 <div class="primary-actions">
@@ -581,19 +614,16 @@
     <script>
         const SHIPPING_COST = 20;
         let products = [];
-        let cart = []; // Stores { name, price, size, batch, qty, category }
+        let cart = []; 
         let currentOrderNum = 0;
 
-        // Audio Objects
         const audioRetail = new Audio('ara.mp3?v=3');
         const audioPreorder = new Audio('money.mp3?v=3');
         const audioAddon = new Audio('arnold.mp3?v=3');
 
-        // Animation state trackers
         let activeOverlay = null;
         let animationTimeout = null;
 
-        // Fallback data for preview environment
         const fallbackProducts = [
             { "name": "Testosterone Cypionate 200mg/ml", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 30, "stock100": 100, "p1k": 1400, "s1k": 1 },
             { "name": "Testosterone Enanthate 250mg/ml",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 36, "stock100": 15,  "p1k": 1450, "s1k": 1 },
@@ -629,7 +659,6 @@
             { "name": "Abaloparatide 30mg", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 120, "stock100":18 },
             { "name": "P21 10mg", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 70, "stock100":8 },
             { "name": "HCG 6000IU", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 32, "stock100": 20 },
-            // Beispiele für PCT & AI & Orals
             { "name": "Raloxifen 50x60mg", "category": "pct", "batch": "P-101", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.1%", "p100": 30, "stock100": 10 },
             { "name": "Exemestan 25x25mg", "category": "pct", "batch": "P-102", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 30, "stock100": 15 },
             { "name": "Letrozole 50x2.5mg", "category": "pct", "batch": "P-103", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.8%", "p100": 33, "stock100": 30 },
@@ -661,14 +690,13 @@
             const addons = products.filter(p => p.category === 'addon');
             const pctItems = products.filter(p => p.category === 'pct');
 
-            // Render Raws / Steroids
             document.getElementById('product-list').innerHTML = raws.map(item => `
                 <tr>
                     <td class="compound-name">${item.name}</td>
-                    <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#34a853' : '#d93025'};">
+                    <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#00ffaa' : '#ff5252'};">
                         ${item.stock100 > 0 ? item.stock100 : '0'}
                     </td>
-                    <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">${item.p100} €</td>
+                    <td style="${item.stock100 === 0 ? 'color: #777;' : 'color: #ff007f; font-weight: bold;'}">${item.p100} €</td>
                     <td>
                         <button class="action-btn" 
                                 onclick="addToCart('${item.name}', ${item.p100}, '100g', '${item.batch}', 'raw')" 
@@ -679,15 +707,14 @@
                 </tr>
             `).join('');
 
-            // Render Addons / Peptides & HGH
             if(addons.length > 0) {
                 document.getElementById('addon-list').innerHTML = addons.map(item => `
                     <tr>
                         <td class="compound-name">${item.name}</td>
-                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#f57f17' : '#d93025'};">
+                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#00ffaa' : '#ff5252'};">
                             ${item.stock100 > 0 ? item.stock100 : '0'}
                         </td>
-                        <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">${item.p100} €</td>
+                        <td style="${item.stock100 === 0 ? 'color: #777;' : 'color: #ff007f; font-weight: bold;'}">${item.p100} €</td>
                         <td>
                             <button class="action-btn" 
                                     onclick="addToCart('${item.name}', ${item.p100}, '10g', '${item.batch}', 'addon')" 
@@ -701,15 +728,14 @@
                 document.getElementById('addon-list').innerHTML = `<tr><td colspan="4" style="text-align:center;">No items available.</td></tr>`;
             }
 
-            // Render PCT, AI & Orals
             if(pctItems.length > 0) {
                 document.getElementById('pct-list').innerHTML = pctItems.map(item => `
                     <tr>
                         <td class="compound-name">${item.name}</td>
-                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#f57f17' : '#d93025'};">
+                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#00ffaa' : '#ff5252'};">
                             ${item.stock100 > 0 ? item.stock100 : '0'}
                         </td>
-                        <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">${item.p100} €</td>
+                        <td style="${item.stock100 === 0 ? 'color: #777;' : 'color: #ff007f; font-weight: bold;'}">${item.p100} €</td>
                         <td>
                             <button class="action-btn" 
                                     onclick="addToCart('${item.name}', ${item.p100}, '10g', '${item.batch}', 'pct')" 
@@ -829,23 +855,19 @@
             updateCartUI();
         }
 
-        // BERECHNUNG DES RABATTS NACH KATEGORIE
         function calculateItemPrice(item) {
             let baseTotal = item.price * item.qty;
             let discountPercent = 0;
             
             if (item.category === 'addon') {
-                // Peptides and HGH -> 30% Rabatt ab 3 Stück
                 if (item.qty >= 3) {
                     discountPercent = 0.30;
                 }
             } else if (item.category === 'pct') {
-                // PCT & AI & Orals -> 10% Rabatt ab 3 Stück
                 if (item.qty >= 3) {
                     discountPercent = 0.10;
                 }
             } else {
-                // Steroids / Oil -> 10% Rabatt erst ab 5 Stück
                 if (item.qty >= 5) {
                     discountPercent = 0.10;
                 }
@@ -880,13 +902,13 @@
                 
                 let discountLabel = "";
                 if (pricing.discountPercent > 0) {
-                    discountLabel = `<span style="color:var(--primary-red); font-size:0.85rem; font-weight:bold; margin-left:5px;">(-${pricing.discountPercent * 100}%)</span>`;
+                    discountLabel = `<span style="color:var(--accent-pink); font-size:0.85rem; font-weight:bold; margin-left:5px;">(-${pricing.discountPercent * 100}%)</span>`;
                 }
 
                 return `
                     <li class="cart-item">
                         <span>${item.name} x${item.qty}</span>
-                        <span>${pricing.finalTotal} € ${discountLabel} <button style="color:red; margin-left:10px; text-decoration:none; cursor:pointer;" onclick="removeItem(${index})">×</button></span>
+                        <span>${pricing.finalTotal} € ${discountLabel} <button style="color:var(--accent-pink); margin-left:10px; text-decoration:none; cursor:pointer; background:none; border:none; font-weight:bold;" onclick="removeItem(${index})">×</button></span>
                     </li>
                 `;
             }).join('');
